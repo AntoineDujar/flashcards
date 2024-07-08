@@ -9,12 +9,11 @@ import {
   Stack,
   Button,
   Text,
+  useBoolean,
 } from "@chakra-ui/react";
 
-import { useState, useEffect } from "react";
-
 function FlashCard({ firstSide, secondSide }) {
-  const [cardHidden, setCardHidden] = useState(true);
+  const [cardVisible, setCardVisible] = useBoolean();
 
   const styleHidden = {
     visibility: "hidden",
@@ -24,13 +23,9 @@ function FlashCard({ firstSide, secondSide }) {
     visibility: "visible",
   };
 
-  const handleCardHidden = () => {
-    setCardHidden(!cardHidden);
-  };
-
   return (
     <>
-      <Card>
+      <Card onClick={setCardVisible.toggle}>
         <CardBody>
           <Stack divider={<StackDivider />} spacing="4">
             <Box>
@@ -50,18 +45,10 @@ function FlashCard({ firstSide, secondSide }) {
                 pt="2"
                 fontSize="sm"
                 id="second_side"
-                style={cardHidden ? styleHidden : styleVisible}
+                style={cardVisible ? styleVisible : styleHidden}
               >
                 {secondSide}
               </Text>
-
-              <Button
-                colorScheme="gray"
-                size="lg"
-                onClick={() => handleCardHidden()}
-              >
-                Reveal
-              </Button>
             </Box>
           </Stack>
         </CardBody>

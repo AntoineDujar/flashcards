@@ -13,13 +13,8 @@ import {
   useBoolean,
 } from "@chakra-ui/react";
 
-import { createClient } from "@supabase/supabase-js";
-
 import { useState, useEffect } from "react";
-
-const supabaseUrl = import.meta.env.VITE_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from "./supabaseClient";
 
 function InsertFlashCard({ card, setCards }) {
   const [firstSide, setFirstSide] = useState("");

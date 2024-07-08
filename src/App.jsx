@@ -19,7 +19,11 @@ function App() {
 
   return (
     <>
-      {!session ? <Auth /> : <Home key={session.user.id} session={session} />}
+      {!session ? (
+        <Auth />
+      ) : (
+        <Home key={session.user.id} session={session} supabase={supabase} />
+      )}
     </>
   );
 }

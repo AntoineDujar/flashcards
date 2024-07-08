@@ -14,8 +14,8 @@ import {
   Wrap,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-
 import { supabase } from "./supabaseClient";
+
 import GroupCard from "./GroupCard";
 
 function Groups({ setSelectedGroup, session }) {
@@ -48,10 +48,6 @@ function Groups({ setSelectedGroup, session }) {
     console.log("clicked");
     setSelectedGroup(name);
   };
-
-  useEffect(() => {
-    groupsSync();
-  }, []);
 
   return (
     <>

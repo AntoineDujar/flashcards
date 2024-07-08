@@ -3,12 +3,17 @@ import InsertFlashCard from "./InsertFlashCard";
 import { ChakraProvider, Wrap } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 
-function Cards({ selectedGroup }) {
+function Cards({ selectedGroup, session }) {
   const [cards, setCards] = useState([]);
 
   return (
     <>
-      <InsertFlashCard cards={cards} setCards={setCards} />
+      <InsertFlashCard
+        cards={cards}
+        setCards={setCards}
+        selectedGroup={selectedGroup}
+        session={session}
+      />
       <Wrap>
         {cards.map((card) => (
           <FlashCard

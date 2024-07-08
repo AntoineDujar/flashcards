@@ -16,7 +16,7 @@ import {
 import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 
-function InsertFlashCard({ card, setCards }) {
+function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
   const [firstSide, setFirstSide] = useState("");
   const [secondSide, setSecondSide] = useState("");
   const handleFirstSideChange = (event) => {
@@ -38,7 +38,10 @@ function InsertFlashCard({ card, setCards }) {
   };
 
   const databaseSync = async () => {
-    let { data: card, error } = await supabase.from("card").select("*");
+    let { data: card, error } = await supabase
+      .from("card")
+      .select("*")
+      .eq("group_name", selectedGroup);
     if (error) {
       console.log(error);
     } else {
@@ -48,9 +51,17 @@ function InsertFlashCard({ card, setCards }) {
   };
 
   const databaseInsert = async () => {
+    const { user } = session;
     const { data, error } = await supabase
       .from("card")
-      .insert([{ first_side: firstSide, second_side: secondSide }])
+      .insert([
+        {
+          first_side: firstSide,
+          second_side: secondSide,
+          group_name: selectedGroup,
+          user_id: user.id,
+        },
+      ])
       .select();
     if (error) {
       console.log(error);

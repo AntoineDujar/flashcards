@@ -17,7 +17,7 @@ function Home({ session }) {
     <ChakraProvider>
       {selectedGroup ? (
         <>
-          <Cards selectedGroup={selectedGroup} />
+          <Cards selectedGroup={selectedGroup} session={session} />
           <Button onClick={() => clearSelectedGroup()}>
             Clear selected group
           </Button>

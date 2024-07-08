@@ -73,6 +73,10 @@ function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
     databaseSync();
   };
 
+  useEffect(() => {
+    databaseSync();
+  }, []);
+
   return (
     <>
       <Card>

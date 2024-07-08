@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
+import { ChakraProvider, Button } from "@chakra-ui/react";
 
 import Auth from "./Auth";
 import Home from "./Home";
+import { Children } from "react";
 
 function App() {
   const [session, setSession] = useState(null);
@@ -17,14 +19,22 @@ function App() {
     });
   }, []);
 
+  const handleLogOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) console.log(error);
+  };
+
   return (
-    <>
+    <ChakraProvider>
       {!session ? (
         <Auth />
       ) : (
-        <Home key={session.user.id} session={session} supabase={supabase} />
+        <>
+          <Button onClick={() => handleLogOut()}>Log out</Button>
+          <Home key={session.user.id} session={session} supabase={supabase} />
+        </>
       )}
-    </>
+    </ChakraProvider>
   );
 }
 

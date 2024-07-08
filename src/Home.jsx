@@ -14,18 +14,16 @@ function Home({ session }) {
   };
 
   return (
-    <ChakraProvider>
+    <>
       {selectedGroup ? (
         <>
+          <Button onClick={() => clearSelectedGroup()}>Back to Groups</Button>
           <Cards selectedGroup={selectedGroup} session={session} />
-          <Button onClick={() => clearSelectedGroup()}>
-            Clear selected group
-          </Button>
         </>
       ) : (
         <Groups setSelectedGroup={setSelectedGroup} session={session} />
       )}
-    </ChakraProvider>
+    </>
   );
 }
 

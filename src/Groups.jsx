@@ -49,8 +49,14 @@ function Groups({ setSelectedGroup, session }) {
     setSelectedGroup(name);
   };
 
+  useEffect(() => {
+    groupsSync();
+  }, []);
+
   return (
     <>
+      <Button onClick={() => groupsInsert()}>Add Group</Button>
+      <Button onClick={() => groupsSync()}>Sync Group</Button>
       <Wrap>
         {groups.map((group) => (
           <GroupCard
@@ -60,8 +66,6 @@ function Groups({ setSelectedGroup, session }) {
           />
         ))}
       </Wrap>
-      <Button onClick={() => groupsInsert()}>Add Group</Button>
-      <Button onClick={() => groupsSync()}>Sync Group</Button>
     </>
   );
 }

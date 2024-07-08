@@ -11,6 +11,7 @@ import {
   Text,
   useBoolean,
 } from "@chakra-ui/react";
+import { Wrap, WrapItem } from "@chakra-ui/react";
 
 function FlashCard({ firstSide, secondSide }) {
   const [cardVisible, setCardVisible] = useBoolean();
@@ -25,34 +26,36 @@ function FlashCard({ firstSide, secondSide }) {
 
   return (
     <>
-      <Card onClick={setCardVisible.toggle}>
-        <CardBody>
-          <Stack divider={<StackDivider />} spacing="4">
-            <Box>
-              <Heading size="xs" textTransform="uppercase">
-                First Side
-              </Heading>
-              <Text pt="2" fontSize="sm">
-                {firstSide}
-              </Text>
-            </Box>
-            <Box>
-              <Heading size="xs" textTransform="uppercase">
-                Second Side
-              </Heading>
+      <WrapItem>
+        <Card onClick={setCardVisible.toggle} _hover={{ cursor: "pointer" }}>
+          <CardBody>
+            <Stack divider={<StackDivider />} spacing="4">
+              <Box>
+                <Heading size="xs" textTransform="uppercase">
+                  First Side
+                </Heading>
+                <Text pt="2" fontSize="sm">
+                  {firstSide}
+                </Text>
+              </Box>
+              <Box>
+                <Heading size="xs" textTransform="uppercase">
+                  Second Side
+                </Heading>
 
-              <Text
-                pt="2"
-                fontSize="sm"
-                id="second_side"
-                style={cardVisible ? styleVisible : styleHidden}
-              >
-                {secondSide}
-              </Text>
-            </Box>
-          </Stack>
-        </CardBody>
-      </Card>
+                <Text
+                  pt="2"
+                  fontSize="sm"
+                  id="second_side"
+                  style={cardVisible ? styleVisible : styleHidden}
+                >
+                  {secondSide}
+                </Text>
+              </Box>
+            </Stack>
+          </CardBody>
+        </Card>
+      </WrapItem>
     </>
   );
 }

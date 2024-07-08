@@ -67,30 +67,43 @@ function InsertFlashCard({ card, setCards }) {
     databaseSync();
   };
 
-  databaseSync();
-
   return (
     <>
-      <Text fontSize="md">Insert New Card</Text>
-      <Input
-        placeholder="First Side"
-        onChange={handleFirstSideChange}
-        value={firstSide}
-      />
-      <Input
-        placeholder="Second Side"
-        onChange={handleSecondSideChange}
-        value={secondSide}
-      />
-      <Button colorScheme="blue" size="lg" onClick={() => databaseInsert()}>
-        Insert
-      </Button>
-      <Button colorScheme="orange" size="lg" onClick={() => databaseSync()}>
-        Sync
-      </Button>
-      <Button colorScheme="green" size="lg" onClick={() => printScreen()}>
-        Print
-      </Button>
+      <Card>
+        <CardBody>
+          <Stack divider={<StackDivider />} spacing="4">
+            <Box>
+              <Heading size="xs" textTransform="uppercase">
+                Insert New Card
+              </Heading>
+              <Input
+                placeholder="First Side"
+                onChange={handleFirstSideChange}
+                value={firstSide}
+              />
+              <Input
+                placeholder="Second Side"
+                onChange={handleSecondSideChange}
+                value={secondSide}
+              />
+              <Button
+                colorScheme="blue"
+                size="lg"
+                onClick={() => databaseInsert()}
+              >
+                Insert
+              </Button>
+              <Button
+                colorScheme="blue"
+                size="lg"
+                onClick={() => databaseSync()}
+              >
+                Sync
+              </Button>
+            </Box>
+          </Stack>
+        </CardBody>
+      </Card>
     </>
   );
 }

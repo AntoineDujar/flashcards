@@ -17,9 +17,11 @@ import { useState, useEffect, useRef } from "react";
 import { supabase } from "./supabaseClient";
 
 function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
+  const itemsOnPage = 20;
   const [firstSide, setFirstSide] = useState("");
   const [secondSide, setSecondSide] = useState("");
   const inputRef = useRef();
+  const [currentPage, setCurrentPage] = useState(0);
 
   const handleFirstSideChange = (event) => {
     if (event) {
@@ -39,16 +41,30 @@ function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
     console.log(secondSide);
   };
 
-  const databaseSync = async () => {
+  const databaseSync = async (newCurrentPage) => {
     let { data: card, error } = await supabase
       .from("card")
       .select("*")
+      .range(newCurrentPage, newCurrentPage + itemsOnPage - 1)
+      .order("id", { ascending: true })
       .eq("group_name", selectedGroup);
     if (error) {
       console.log(error);
     } else {
       console.log(card);
       setCards(card);
+    }
+  };
+
+  const handleNext = () => {
+    setCurrentPage(currentPage + itemsOnPage);
+    databaseSync(currentPage + itemsOnPage);
+  };
+
+  const handlePrev = () => {
+    if (currentPage - 10 >= 0) {
+      setCurrentPage(currentPage - itemsOnPage);
+      databaseSync(currentPage - itemsOnPage);
     }
   };
 
@@ -73,11 +89,12 @@ function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
     setFirstSide("");
     setSecondSide("");
     inputRef.current.focus();
-    databaseSync();
+    setCurrentPage(0);
+    databaseSync(0);
   };
 
   useEffect(() => {
-    databaseSync();
+    databaseSync(currentPage);
   }, []);
 
   return (
@@ -114,6 +131,29 @@ function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
                 onClick={() => databaseSync()}
               >
                 Sync
+              </Button>
+            </Box>
+          </Stack>
+        </CardBody>
+      </Card>
+      <Card>
+        <CardBody>
+          <Stack divider={<StackDivider />} spacing="4">
+            <Box>
+              <Button
+                colorScheme="green"
+                size="xs"
+                onClick={() => handlePrev()}
+              >
+                prev
+              </Button>
+              <Text>{currentPage}</Text>
+              <Button
+                colorScheme="green"
+                size="xs"
+                onClick={() => handleNext()}
+              >
+                next
               </Button>
             </Box>
           </Stack>

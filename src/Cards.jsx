@@ -14,7 +14,8 @@ function Cards({ selectedGroup, session }) {
 
   return (
     <>
-      <Button onClick={() => handleRecallInProgress()}>Recall all</Button>
+      <Button onClick={() => handleRecallInProgress()}>Study Page</Button>
+      <Button onClick={() => handleRecallInProgress()}>Study All</Button>
       {!recallInProgress ? (
         <>
           <InsertFlashCard

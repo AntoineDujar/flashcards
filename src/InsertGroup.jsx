@@ -15,7 +15,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-function InsertGroup({ setGroups, session }) {
+function InsertGroup({ setGroups, session, groupsSync }) {
   const [groupName, setGroupName] = useState("");
   const inputRef = useRef();
 
@@ -24,16 +24,6 @@ function InsertGroup({ setGroups, session }) {
 
   const handleGroupNameChange = (event) => {
     setGroupName(event.target.value);
-  };
-
-  const groupsSync = async () => {
-    let { data: data, error } = await supabase.from("groups").select("*");
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(data);
-      setGroups(data);
-    }
   };
 
   const groupsInsert = async () => {

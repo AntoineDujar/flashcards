@@ -1,18 +1,4 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  StackDivider,
-  Box,
-  Heading,
-  Stack,
-  Button,
-  Text,
-  useBoolean,
-  Input,
-  Wrap,
-} from "@chakra-ui/react";
+import { Button, Wrap } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 
@@ -55,8 +41,9 @@ function Groups({ setSelectedGroup, session }) {
 
   return (
     <>
-      <Button onClick={() => groupsInsert()}>Add Group</Button>
-      <Button onClick={() => groupsSync()}>Sync Group</Button>
+      <Button colorScheme="green" onClick={() => groupsInsert()}>
+        Add Group
+      </Button>
       <Wrap>
         {groups.map((group) => (
           <GroupCard

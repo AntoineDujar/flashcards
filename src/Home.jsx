@@ -17,7 +17,7 @@ function Home({ session }) {
     <>
       {selectedGroup ? (
         <>
-          <Button onClick={() => clearSelectedGroup()}>Back to Groups</Button>
+          <Button onClick={() => clearSelectedGroup()}>Groups</Button>
           <Cards selectedGroup={selectedGroup} session={session} />
         </>
       ) : (

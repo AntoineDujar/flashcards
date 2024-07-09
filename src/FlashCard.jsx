@@ -1,17 +1,14 @@
 import {
   Card,
-  CardHeader,
   CardBody,
-  CardFooter,
   StackDivider,
   Box,
   Heading,
   Stack,
-  Button,
   Text,
   useBoolean,
+  WrapItem,
 } from "@chakra-ui/react";
-import { Wrap, WrapItem } from "@chakra-ui/react";
 
 function FlashCard({ firstSide, secondSide }) {
   const [cardVisible, setCardVisible] = useBoolean();
@@ -47,7 +44,7 @@ function FlashCard({ firstSide, secondSide }) {
                   pt="2"
                   fontSize="sm"
                   id="second_side"
-                  style={cardVisible ? styleVisible : styleHidden}
+                  style={!cardVisible ? styleVisible : styleHidden}
                 >
                   {secondSide}
                 </Text>

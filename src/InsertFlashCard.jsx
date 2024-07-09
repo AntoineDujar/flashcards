@@ -12,6 +12,16 @@ import {
   Text,
   useBoolean,
 } from "@chakra-ui/react";
+import {
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
 
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "./supabaseClient";
@@ -22,6 +32,9 @@ function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
   const [secondSide, setSecondSide] = useState("");
   const inputRef = useRef();
   const [currentPage, setCurrentPage] = useState(0);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = useRef();
 
   const handleFirstSideChange = (event) => {
     if (event) {
@@ -41,11 +54,10 @@ function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
     console.log(secondSide);
   };
 
-  const databaseSync = async (newCurrentPage) => {
+  const databaseSync = async () => {
     let { data: card, error } = await supabase
       .from("card")
       .select("*")
-      .range(newCurrentPage, newCurrentPage + itemsOnPage - 1)
       .order("id", { ascending: true })
       .eq("group_name", selectedGroup);
     if (error) {
@@ -53,18 +65,6 @@ function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
     } else {
       console.log(card);
       setCards(card);
-    }
-  };
-
-  const handleNext = () => {
-    setCurrentPage(currentPage + itemsOnPage);
-    databaseSync(currentPage + itemsOnPage);
-  };
-
-  const handlePrev = () => {
-    if (currentPage - 10 >= 0) {
-      setCurrentPage(currentPage - itemsOnPage);
-      databaseSync(currentPage - itemsOnPage);
     }
   };
 
@@ -99,66 +99,43 @@ function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
 
   return (
     <>
-      <Card>
-        <CardBody>
-          <Stack divider={<StackDivider />} spacing="4">
-            <Box>
-              <Heading size="xs" textTransform="uppercase">
-                Insert New Card
-              </Heading>
-              <Input
-                autoFocus
-                ref={inputRef}
-                placeholder="First Side"
-                onChange={handleFirstSideChange}
-                value={firstSide}
-              />
-              <Input
-                placeholder="Second Side"
-                onChange={handleSecondSideChange}
-                value={secondSide}
-              />
-              <Button
-                colorScheme="blue"
-                size="lg"
-                onClick={() => databaseInsert()}
-              >
-                Insert
-              </Button>
-              <Button
-                colorScheme="blue"
-                size="lg"
-                onClick={() => databaseSync()}
-              >
-                Sync
-              </Button>
-            </Box>
-          </Stack>
-        </CardBody>
-      </Card>
-      <Card>
-        <CardBody>
-          <Stack divider={<StackDivider />} spacing="4">
-            <Box>
-              <Button
-                colorScheme="green"
-                size="xs"
-                onClick={() => handlePrev()}
-              >
-                prev
-              </Button>
-              <Text>{currentPage}</Text>
-              <Button
-                colorScheme="green"
-                size="xs"
-                onClick={() => handleNext()}
-              >
-                next
-              </Button>
-            </Box>
-          </Stack>
-        </CardBody>
-      </Card>
+      <Button ref={btnRef} colorScheme="green" onClick={onOpen}>
+        Insert new card
+      </Button>
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Insert New Card</DrawerHeader>
+
+          <DrawerBody>
+            <Stack divider={<StackDivider />} spacing="4">
+              <Box>
+                <Input
+                  autoFocus
+                  ref={inputRef}
+                  placeholder="First Side"
+                  onChange={handleFirstSideChange}
+                  value={firstSide}
+                />
+                <Input
+                  placeholder="Second Side"
+                  onChange={handleSecondSideChange}
+                  value={secondSide}
+                />
+                <Button colorScheme="green" onClick={() => databaseInsert()}>
+                  Insert
+                </Button>
+              </Box>
+            </Stack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 }

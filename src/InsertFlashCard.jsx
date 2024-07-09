@@ -1,17 +1,5 @@
 import { Input } from "@chakra-ui/react";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  StackDivider,
-  Box,
-  Heading,
-  Stack,
-  Button,
-  Text,
-  useBoolean,
-} from "@chakra-ui/react";
+import { StackDivider, Box, Stack, Button } from "@chakra-ui/react";
 import {
   Drawer,
   DrawerBody,
@@ -27,11 +15,9 @@ import { useState, useEffect, useRef } from "react";
 import { supabase } from "./supabaseClient";
 
 function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
-  const itemsOnPage = 20;
   const [firstSide, setFirstSide] = useState("");
   const [secondSide, setSecondSide] = useState("");
   const inputRef = useRef();
-  const [currentPage, setCurrentPage] = useState(0);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
@@ -89,12 +75,11 @@ function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
     setFirstSide("");
     setSecondSide("");
     inputRef.current.focus();
-    setCurrentPage(0);
-    databaseSync(0);
+    databaseSync();
   };
 
   useEffect(() => {
-    databaseSync(currentPage);
+    databaseSync();
   }, []);
 
   return (
@@ -117,7 +102,6 @@ function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
             <Stack divider={<StackDivider />} spacing="4">
               <Box>
                 <Input
-                  autoFocus
                   ref={inputRef}
                   placeholder="First Side"
                   onChange={handleFirstSideChange}

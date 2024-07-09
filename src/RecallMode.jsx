@@ -14,8 +14,17 @@ import {
 
 import { useState, useEffect } from "react";
 
+function shuffleArray(originalArray) {
+  let shuffledArray = [...originalArray];
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+}
+
 function RecallMode({ cards, handleRecall }) {
-  const [testCards, setTestCards] = useState(cards);
+  const [testCards, setTestCards] = useState(shuffleArray(cards));
   const [flipCard, setFlipCard] = useState(false);
   const [cardsLeft, setCardsLeft] = useState(testCards.length - 1);
   const [incorrectCount, setIncorrectCount] = useState(0);

@@ -35,7 +35,7 @@ function Groups({ setSelectedGroup, session }) {
     const { user } = session;
     const { data, error } = await supabase
       .from("groups")
-      .insert([{ group_name: "vocab", user_id: user.id }])
+      .insert([{ group_name: "basic characters", user_id: user.id }])
       .select();
     if (error) {
       console.log(error);

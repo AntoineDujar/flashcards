@@ -13,12 +13,14 @@ import {
   useBoolean,
 } from "@chakra-ui/react";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "./supabaseClient";
 
 function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
   const [firstSide, setFirstSide] = useState("");
   const [secondSide, setSecondSide] = useState("");
+  const inputRef = useRef();
+
   const handleFirstSideChange = (event) => {
     if (event) {
       setFirstSide(event.target.value);
@@ -70,6 +72,7 @@ function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
     }
     setFirstSide("");
     setSecondSide("");
+    inputRef.current.focus();
     databaseSync();
   };
 
@@ -87,6 +90,8 @@ function InsertFlashCard({ cards, setCards, selectedGroup, session }) {
                 Insert New Card
               </Heading>
               <Input
+                autoFocus
+                ref={inputRef}
                 placeholder="First Side"
                 onChange={handleFirstSideChange}
                 value={firstSide}

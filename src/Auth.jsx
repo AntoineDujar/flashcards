@@ -34,6 +34,7 @@ export default function Auth() {
       alert(error.error_description || error.message);
     } else {
       alert("Check your email for the login link!");
+      window.close();
     }
     setLoading(false);
   };

@@ -42,11 +42,23 @@ function Groups({ setSelectedGroup, session }) {
     }
   };
 
-  const groupsDelete = async (id) => {
+  const groupsDelete = async (id, group_name) => {
     if (confirm("Are you sure you want to delete group?")) {
+      const { user } = session;
       console.log(`delete ${id}`);
-      const response = await supabase.from("groups").delete().eq("id", id);
-      console.log(response);
+      const response_groups = await supabase
+        .from("groups")
+        .delete()
+        .eq("id", id)
+        .eq("user_id", user.id);
+      console.log(response_groups);
+
+      const response_card = await supabase
+        .from("card")
+        .delete()
+        .eq("group_name", group_name)
+        .eq("user_id", user.id);
+      console.log(response_card);
       groupsSync();
     }
   };
@@ -85,7 +97,7 @@ function Groups({ setSelectedGroup, session }) {
                 groupName={group.group_name}
                 onClick={() => {
                   editMode
-                    ? groupsDelete(group.id)
+                    ? groupsDelete(group.id, group.group_name)
                     : handleSelectGroup(group.group_name);
                 }}
                 background={editMode ? "#E53E3E" : ""}

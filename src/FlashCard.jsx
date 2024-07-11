@@ -20,7 +20,7 @@ function FlashCard({
 }) {
   return (
     <>
-      <WrapItem>
+      <Box>
         <Card
           onClick={onClick}
           _hover={hover}
@@ -49,7 +49,7 @@ function FlashCard({
             </Stack>
           </CardBody>
         </Card>
-      </WrapItem>
+      </Box>
     </>
   );
 }

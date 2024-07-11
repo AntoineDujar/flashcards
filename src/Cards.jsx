@@ -1,4 +1,10 @@
-import { Wrap, Button, useBoolean, Heading } from "@chakra-ui/react";
+import {
+  Wrap,
+  Button,
+  useBoolean,
+  Heading,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import { useState } from "react";
 
 import FlashCard from "./FlashCard";
@@ -57,7 +63,7 @@ function Cards({ selectedGroup, session }) {
             Study All
           </Button>
           <Heading>{selectedGroup} flash cards</Heading>
-          <Wrap>
+          <SimpleGrid columns={[2, 3, 4, 5]} spacing="20px">
             {cards.map((card) => (
               <FlashCard
                 key={`fc_wrap_${card.id}`}
@@ -71,7 +77,7 @@ function Cards({ selectedGroup, session }) {
                 hover={editMode ? { cursor: "pointer" } : ""}
               />
             ))}
-          </Wrap>
+          </SimpleGrid>
         </>
       ) : (
         <RecallMode cards={cards} handleRecall={handleRecallInProgress} />

@@ -78,21 +78,27 @@ function Cards({ selectedGroup, session, selectedGroupSet }) {
         >
           Study
         </Button>
-        <InsertFlashCard
-          cards={cards}
-          setCards={setCards}
-          selectedGroup={selectedGroup}
-          session={session}
-          databaseSync={databaseSync}
-          toastMessage={toast}
-        />
-        <Button
-          onClick={setEditMode.toggle}
-          variant="outline"
-          leftIcon={<MdEdit />}
-        >
-          Edit
-        </Button>
+        {!recallInProgress ? (
+          <>
+            <InsertFlashCard
+              cards={cards}
+              setCards={setCards}
+              selectedGroup={selectedGroup}
+              session={session}
+              databaseSync={databaseSync}
+              toastMessage={toast}
+            />
+            <Button
+              onClick={setEditMode.toggle}
+              variant="outline"
+              leftIcon={<MdEdit />}
+            >
+              Edit
+            </Button>
+          </>
+        ) : (
+          <></>
+        )}
       </Flex>
       {!recallInProgress ? (
         <>

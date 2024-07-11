@@ -1,5 +1,5 @@
-import { ChakraProvider, Wrap, Button, useBoolean } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { Wrap, Button, useBoolean, Heading } from "@chakra-ui/react";
+import { useState } from "react";
 
 import FlashCard from "./FlashCard";
 import InsertFlashCard from "./InsertFlashCard";
@@ -41,10 +41,6 @@ function Cards({ selectedGroup, session }) {
 
   return (
     <>
-      <Button onClick={setEditMode.toggle}>Edit</Button>
-      <Button colorScheme="blue" onClick={() => handleRecallInProgress()}>
-        Study All
-      </Button>
       {!recallInProgress ? (
         <>
           <InsertFlashCard
@@ -54,6 +50,13 @@ function Cards({ selectedGroup, session }) {
             session={session}
             databaseSync={databaseSync}
           />
+          <Button onClick={setEditMode.toggle} variant="outline">
+            Edit
+          </Button>
+          <Button colorScheme="blue" onClick={() => handleRecallInProgress()}>
+            Study All
+          </Button>
+          <Heading>{selectedGroup} flash cards</Heading>
           <Wrap>
             {cards.map((card) => (
               <FlashCard

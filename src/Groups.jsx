@@ -1,4 +1,4 @@
-import { Wrap, Button, useBoolean } from "@chakra-ui/react";
+import { Wrap, Button, useBoolean, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 
 import GroupCard from "./GroupCard";
@@ -41,7 +41,10 @@ function Groups({ setSelectedGroup, session }) {
         session={session}
         groupsSync={groupsSync}
       />
-      <Button onClick={setEditMode.toggle}>Edit</Button>
+      <Button onClick={setEditMode.toggle} variant="outline">
+        Edit
+      </Button>
+      <Heading>Flash card groups</Heading>
       <Wrap>
         {groups.map((group) => (
           <GroupCard

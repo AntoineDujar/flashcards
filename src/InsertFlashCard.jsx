@@ -71,7 +71,7 @@ function InsertFlashCard({
   return (
     <>
       <Button ref={btnRef} colorScheme="green" onClick={onOpen}>
-        Insert new card
+        Add New Card
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -82,7 +82,7 @@ function InsertFlashCard({
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Insert New Card</DrawerHeader>
+          <DrawerHeader>Add new card</DrawerHeader>
 
           <DrawerBody>
             <Stack divider={<StackDivider />} spacing="4">

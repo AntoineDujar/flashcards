@@ -1,10 +1,17 @@
-import { Wrap, Button, useBoolean, Heading } from "@chakra-ui/react";
+import {
+  Wrap,
+  Button,
+  useBoolean,
+  Heading,
+  Flex,
+  Spacer,
+} from "@chakra-ui/react";
 import { useState } from "react";
+import { supabase } from "./supabaseClient";
 
 import GroupCard from "./GroupCard";
 import InsertGroup from "./InsertGroup";
-
-import { supabase } from "./supabaseClient";
+import SettingsButton from "./SettingsButton";
 
 function Groups({ setSelectedGroup, session }) {
   const [groups, setGroups] = useState([]);
@@ -36,15 +43,20 @@ function Groups({ setSelectedGroup, session }) {
 
   return (
     <>
-      <InsertGroup
-        setGroups={setGroups}
-        session={session}
-        groupsSync={groupsSync}
-      />
-      <Button onClick={setEditMode.toggle} variant="outline">
-        Edit
-      </Button>
+      <Flex>
+        <SettingsButton />
+        <Spacer />
+        <InsertGroup
+          setGroups={setGroups}
+          session={session}
+          groupsSync={groupsSync}
+        />
+        <Button onClick={setEditMode.toggle} variant="outline">
+          Edit
+        </Button>
+      </Flex>
       <Heading>Flash card groups</Heading>
+
       <Wrap>
         {groups.map((group) => (
           <GroupCard

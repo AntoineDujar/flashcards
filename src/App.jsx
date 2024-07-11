@@ -21,7 +21,7 @@ function App() {
   return (
     <ChakraProvider>
       <Flex direction="column" w="100%" align="center">
-        <Box w="85%" my="2%">
+        <Box w="85%" my="1%">
           {!session ? (
             <Auth />
           ) : (

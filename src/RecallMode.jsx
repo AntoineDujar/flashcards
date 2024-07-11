@@ -61,34 +61,48 @@ function RecallMode({ cards, handleRecall }) {
     <>
       <Heading>Recall mode</Heading>
       {cardsLeft >= 0 ? (
-        <Card>
-          {!flipCard ? (
-            <CardBody
-              onClick={() => handleFlipCard()}
-              _hover={{ cursor: "pointer" }}
-            >
-              <Heading size="xs" textTransform="uppercase">
-                First Side
-              </Heading>
-              <Text pt="2" fontSize="sm">
-                {testCards[cardsLeft].first_side}
-              </Text>
-            </CardBody>
-          ) : (
-            <>
-              <CardBody>
-                <Heading size="xs" textTransform="uppercase">
-                  Second Side
-                </Heading>
-                <Text pt="2" fontSize="sm">
-                  {testCards[cardsLeft].second_side}
-                </Text>
+        <>
+          <Card>
+            {!flipCard ? (
+              <CardBody
+                onClick={() => handleFlipCard()}
+                _hover={{ cursor: "pointer" }}
+              >
+                <Stack spacing="4">
+                  <Heading size="md" textTransform="uppercase">
+                    First Side
+                  </Heading>
+                  <Text fontSize="2xl">{testCards[cardsLeft].first_side}</Text>
+                </Stack>
               </CardBody>
-              <Button onClick={() => handleCardsLeft()}>Correct</Button>
-              <Button onClick={() => handleIncorrect()}>Incorrect</Button>
-            </>
+            ) : (
+              <>
+                <CardBody>
+                  <Stack spacing="4">
+                    <Heading size="md" textTransform="uppercase">
+                      Second Side
+                    </Heading>
+                    <Text fontSize="2xl">
+                      {testCards[cardsLeft].second_side}
+                    </Text>
+                  </Stack>
+                </CardBody>
+              </>
+            )}
+          </Card>
+          {flipCard ? (
+            <Flex>
+              <Button onClick={() => handleCardsLeft()} colorScheme="green">
+                Correct
+              </Button>
+              <Button onClick={() => handleIncorrect()} colorScheme="red">
+                Incorrect
+              </Button>
+            </Flex>
+          ) : (
+            <></>
           )}
-        </Card>
+        </>
       ) : (
         <></>
       )}

@@ -11,7 +11,7 @@ function GroupCard({ groupName, onClick, background, color }) {
           color={color}
         >
           <CardHeader>
-            <Heading>{groupName}</Heading>
+            <Heading fontSize="2xl">{groupName}</Heading>
           </CardHeader>
         </Card>
       </WrapItem>

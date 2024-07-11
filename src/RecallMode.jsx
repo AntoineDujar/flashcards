@@ -10,6 +10,7 @@ import {
   Button,
   Text,
   useBoolean,
+  Flex,
 } from "@chakra-ui/react";
 
 import { useState, useEffect } from "react";
@@ -74,16 +75,18 @@ function RecallMode({ cards, handleRecall }) {
               </Text>
             </CardBody>
           ) : (
-            <CardBody>
-              <Heading size="xs" textTransform="uppercase">
-                Second Side
-              </Heading>
-              <Text pt="2" fontSize="sm">
-                {testCards[cardsLeft].second_side}
-              </Text>
+            <>
+              <CardBody>
+                <Heading size="xs" textTransform="uppercase">
+                  Second Side
+                </Heading>
+                <Text pt="2" fontSize="sm">
+                  {testCards[cardsLeft].second_side}
+                </Text>
+              </CardBody>
               <Button onClick={() => handleCardsLeft()}>Correct</Button>
               <Button onClick={() => handleIncorrect()}>Incorrect</Button>
-            </CardBody>
+            </>
           )}
         </Card>
       ) : (

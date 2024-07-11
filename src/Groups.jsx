@@ -27,8 +27,12 @@ function Groups({ setSelectedGroup, session }) {
   };
 
   const groupsSync = async () => {
+    const { user } = session;
     setLoading.toggle();
-    let { data: data, error } = await supabase.from("groups").select("*");
+    let { data: data, error } = await supabase
+      .from("groups")
+      .select("*")
+      .eq("user_id", user.id);
     if (error) {
       console.log(error);
     } else {
@@ -61,6 +65,7 @@ function Groups({ setSelectedGroup, session }) {
           onClick={setEditMode.toggle}
           variant="outline"
           leftIcon={<MdEdit />}
+          colorScheme={editMode ? "red" : ""}
         >
           Edit
         </Button>
@@ -69,7 +74,7 @@ function Groups({ setSelectedGroup, session }) {
 
       {loading ? (
         <Center>
-          <Spinner />
+          <Spinner thickness="4px" speed="1s" />
         </Center>
       ) : (
         <>

@@ -8,7 +8,7 @@ import {
   Spacer,
   Center,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import FlashCard from "./FlashCard";
 import InsertFlashCard from "./InsertFlashCard";
@@ -39,11 +39,13 @@ function Cards({ selectedGroup, session, selectedGroupSet }) {
 
   const databaseSync = async () => {
     setLoading.toggle();
+    const { user } = session;
 
     let { data: card, error } = await supabase
       .from("card")
       .select("*")
       .order("id", { ascending: true })
+      .eq("user_id", user.id)
       .eq("group_name", selectedGroup);
     if (error) {
       console.log(error);
@@ -70,6 +72,10 @@ function Cards({ selectedGroup, session, selectedGroupSet }) {
       databaseSync();
     }
   };
+
+  useEffect(() => {
+    databaseSync();
+  }, []);
 
   return (
     <>
@@ -99,6 +105,7 @@ function Cards({ selectedGroup, session, selectedGroupSet }) {
               onClick={setEditMode.toggle}
               variant="outline"
               leftIcon={<MdEdit />}
+              colorScheme={editMode ? "red" : ""}
             >
               Edit
             </Button>
@@ -112,7 +119,7 @@ function Cards({ selectedGroup, session, selectedGroupSet }) {
           <Heading>{selectedGroup} flash cards</Heading>
           {loading ? (
             <Center>
-              <Spinner />
+              <Spinner thickness="4px" speed="1s" />
             </Center>
           ) : (
             <>

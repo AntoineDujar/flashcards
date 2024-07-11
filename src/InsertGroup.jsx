@@ -14,6 +14,7 @@ import {
   DrawerCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
+import { MdAdd } from "react-icons/md";
 
 function InsertGroup({ setGroups, session, groupsSync }) {
   const [groupName, setGroupName] = useState("");
@@ -47,8 +48,13 @@ function InsertGroup({ setGroups, session, groupsSync }) {
   }, []);
   return (
     <>
-      <Button ref={btnRef} colorScheme="green" onClick={onOpen}>
-        Add Group
+      <Button
+        ref={btnRef}
+        colorScheme="green"
+        onClick={onOpen}
+        leftIcon={<MdAdd />}
+      >
+        Add
       </Button>
       <Drawer
         isOpen={isOpen}

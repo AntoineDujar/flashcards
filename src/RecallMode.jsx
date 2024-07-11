@@ -13,6 +13,17 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
+
 import { useState, useEffect } from "react";
 
 function shuffleArray(originalArray) {
@@ -29,7 +40,8 @@ function RecallMode({ cards, handleRecall }) {
   const [flipCard, setFlipCard] = useState(false);
   const [cardsLeft, setCardsLeft] = useState(testCards.length - 1);
   const [incorrectCount, setIncorrectCount] = useState(0);
-  console.log(testCards);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleFlipCard = () => {
     setFlipCard(!flipCard);
@@ -49,16 +61,35 @@ function RecallMode({ cards, handleRecall }) {
 
   useEffect(() => {
     if (cardsLeft < 0) {
-      alert(
-        `${testCards.length - incorrectCount} correct out of ${
-          testCards.length
-        } `
-      );
-      handleRecall();
+      onOpen();
+      // alert(
+      //   `${testCards.length - incorrectCount} correct out of ${
+      //     testCards.length
+      //   } `
+      // );
     }
   }, [cardsLeft]);
   return (
     <>
+      <Modal isOpen={isOpen} onClose={handleRecall}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Study result</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>
+              {testCards.length - incorrectCount} correct out of{" "}
+              {testCards.length}
+            </Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleRecall}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Heading>Recall mode</Heading>
       {cardsLeft >= 0 ? (
         <>

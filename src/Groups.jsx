@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { supabase } from "./supabaseClient";
+import { MdEdit } from "react-icons/md";
 
 import GroupCard from "./GroupCard";
 import InsertGroup from "./InsertGroup";
@@ -51,7 +52,11 @@ function Groups({ setSelectedGroup, session }) {
           session={session}
           groupsSync={groupsSync}
         />
-        <Button onClick={setEditMode.toggle} variant="outline">
+        <Button
+          onClick={setEditMode.toggle}
+          variant="outline"
+          leftIcon={<MdEdit />}
+        >
           Edit
         </Button>
       </Flex>

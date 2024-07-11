@@ -13,6 +13,7 @@ import {
 
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "./supabaseClient";
+import { MdAdd } from "react-icons/md";
 
 function InsertFlashCard({
   cards,
@@ -20,6 +21,7 @@ function InsertFlashCard({
   selectedGroup,
   session,
   databaseSync,
+  toastMessage,
 }) {
   const [firstSide, setFirstSide] = useState("");
   const [secondSide, setSecondSide] = useState("");
@@ -61,6 +63,13 @@ function InsertFlashCard({
     setFirstSide("");
     setSecondSide("");
     inputRef.current.focus();
+    toastMessage({
+      title: "Card Inserted",
+      description: "",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
     databaseSync();
   };
 
@@ -70,8 +79,13 @@ function InsertFlashCard({
 
   return (
     <>
-      <Button ref={btnRef} colorScheme="green" onClick={onOpen}>
-        Add New Card
+      <Button
+        leftIcon={<MdAdd />}
+        ref={btnRef}
+        colorScheme="green"
+        onClick={onOpen}
+      >
+        Add
       </Button>
       <Drawer
         isOpen={isOpen}

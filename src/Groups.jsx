@@ -5,16 +5,19 @@ import {
   Heading,
   Flex,
   Spacer,
+  Center,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { supabase } from "./supabaseClient";
 import { MdEdit } from "react-icons/md";
+import { Spinner } from "@chakra-ui/react";
 
 import GroupCard from "./GroupCard";
 import InsertGroup from "./InsertGroup";
 import SettingsButton from "./SettingsButton";
 
 function Groups({ setSelectedGroup, session }) {
+  const [loading, setLoading] = useBoolean();
   const [groups, setGroups] = useState([]);
   const [editMode, setEditMode] = useBoolean();
 
@@ -24,10 +27,12 @@ function Groups({ setSelectedGroup, session }) {
   };
 
   const groupsSync = async () => {
+    setLoading.toggle();
     let { data: data, error } = await supabase.from("groups").select("*");
     if (error) {
       console.log(error);
     } else {
+      setLoading.toggle();
       console.log(data);
       setGroups(data);
     }
@@ -62,21 +67,29 @@ function Groups({ setSelectedGroup, session }) {
       </Flex>
       <Heading>Flash card groups</Heading>
 
-      <Wrap>
-        {groups.map((group) => (
-          <GroupCard
-            key={`gc_wrap${group.id}`}
-            groupName={group.group_name}
-            onClick={() => {
-              editMode
-                ? groupsDelete(group.id)
-                : handleSelectGroup(group.group_name);
-            }}
-            background={editMode ? "#E53E3E" : ""}
-            color={editMode ? "#fff" : ""}
-          />
-        ))}
-      </Wrap>
+      {loading ? (
+        <Center>
+          <Spinner />
+        </Center>
+      ) : (
+        <>
+          <Wrap>
+            {groups.map((group) => (
+              <GroupCard
+                key={`gc_wrap${group.id}`}
+                groupName={group.group_name}
+                onClick={() => {
+                  editMode
+                    ? groupsDelete(group.id)
+                    : handleSelectGroup(group.group_name);
+                }}
+                background={editMode ? "#E53E3E" : ""}
+                color={editMode ? "#fff" : ""}
+              />
+            ))}
+          </Wrap>
+        </>
+      )}
     </>
   );
 }

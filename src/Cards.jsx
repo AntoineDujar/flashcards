@@ -6,6 +6,7 @@ import {
   SimpleGrid,
   Flex,
   Spacer,
+  Center,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -19,12 +20,14 @@ import { MdMenuBook } from "react-icons/md";
 
 import { supabase } from "./supabaseClient";
 import { useToast } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react";
 
 function Cards({ selectedGroup, session, selectedGroupSet }) {
   const toast = useToast();
   const [cards, setCards] = useState([]);
   const [recallInProgress, setRecallInProgress] = useState(false);
   const [editMode, setEditMode] = useBoolean();
+  const [loading, setLoading] = useBoolean();
 
   const clearSelectedGroup = () => {
     selectedGroupSet(null);
@@ -35,6 +38,8 @@ function Cards({ selectedGroup, session, selectedGroupSet }) {
   };
 
   const databaseSync = async () => {
+    setLoading.toggle();
+
     let { data: card, error } = await supabase
       .from("card")
       .select("*")
@@ -43,6 +48,8 @@ function Cards({ selectedGroup, session, selectedGroupSet }) {
     if (error) {
       console.log(error);
     } else {
+      setLoading.toggle();
+
       console.log(card);
       setCards(card);
     }
@@ -103,21 +110,29 @@ function Cards({ selectedGroup, session, selectedGroupSet }) {
       {!recallInProgress ? (
         <>
           <Heading>{selectedGroup} flash cards</Heading>
-          <SimpleGrid columns={[2, 3, 4, 5]} spacing="20px">
-            {cards.map((card) => (
-              <FlashCard
-                key={`fc_wrap_${card.id}`}
-                firstSide={card.first_side}
-                secondSide={card.second_side}
-                onClick={() => {
-                  editMode ? databaseDelete(card.id) : "";
-                }}
-                background={editMode ? "#E53E3E" : false}
-                color={editMode ? "#fff" : ""}
-                hover={editMode ? { cursor: "pointer" } : ""}
-              />
-            ))}
-          </SimpleGrid>
+          {loading ? (
+            <Center>
+              <Spinner />
+            </Center>
+          ) : (
+            <>
+              <SimpleGrid columns={[2, 3, 4, 5]} spacing="20px">
+                {cards.map((card) => (
+                  <FlashCard
+                    key={`fc_wrap_${card.id}`}
+                    firstSide={card.first_side}
+                    secondSide={card.second_side}
+                    onClick={() => {
+                      editMode ? databaseDelete(card.id) : "";
+                    }}
+                    background={editMode ? "#E53E3E" : false}
+                    color={editMode ? "#fff" : ""}
+                    hover={editMode ? { cursor: "pointer" } : ""}
+                  />
+                ))}
+              </SimpleGrid>
+            </>
+          )}
         </>
       ) : (
         <RecallMode cards={cards} handleRecall={handleRecallInProgress} />

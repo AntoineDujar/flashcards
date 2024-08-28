@@ -20,6 +20,7 @@ function App() {
 
   return (
     <ChakraProvider>
+      <link rel="manifest" href="/manifest.json" />
       <Flex direction="column" w="100%" align="center">
         <Box w="85%" my="1%">
           {!session ? (

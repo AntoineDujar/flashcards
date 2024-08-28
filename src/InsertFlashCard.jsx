@@ -27,6 +27,8 @@ import { supabase } from "./supabaseClient";
 import { MdAdd } from "react-icons/md";
 import { openai } from "./openaiClient";
 
+const cardLimit = 5;
+
 function InsertFlashCard({
   cards,
   setCards,
@@ -68,11 +70,15 @@ function InsertFlashCard({
     console.log(JSON.parse(content));
     const aiResponse = JSON.parse(content);
 
+    const aiFlashcards = aiResponse.flashcards;
+
+    console.log(aiResponse.flashcards.length);
+
     const { user } = session;
 
-    const formattedObjects = Object.keys(aiResponse).map((key) => ({
+    const formattedObjects = aiFlashcards.map((key) => ({
       first_side: aiResponse[key].first_side,
-      second_side: aiResponse[key].second_side, // Assuming both sides are the same for simplicity
+      second_side: aiResponse[key].second_side,
       group_name: selectedGroup,
       user_id: user.id,
     }));
@@ -110,34 +116,38 @@ function InsertFlashCard({
   };
 
   const databaseInsert = async () => {
-    const { user } = session;
-    const { data, error } = await supabase
-      .from("card")
-      .insert([
-        {
-          first_side: firstSide,
-          second_side: secondSide,
-          group_name: selectedGroup,
-          user_id: user.id,
-        },
-      ])
-      .select();
-    if (error) {
-      console.log(error);
+    if (cards.length < cardLimit) {
+      const { user } = session;
+      const { data, error } = await supabase
+        .from("card")
+        .insert([
+          {
+            first_side: firstSide,
+            second_side: secondSide,
+            group_name: selectedGroup,
+            user_id: user.id,
+          },
+        ])
+        .select();
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(data);
+      }
+      setFirstSide("");
+      setSecondSide("");
+      inputRef.current.focus();
+      toastMessage({
+        title: "Card Inserted",
+        description: "",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      databaseSync();
     } else {
-      console.log(data);
+      alert("Card limit reached");
     }
-    setFirstSide("");
-    setSecondSide("");
-    inputRef.current.focus();
-    toastMessage({
-      title: "Card Inserted",
-      description: "",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-    databaseSync();
   };
 
   return (
@@ -201,6 +211,11 @@ function InsertFlashCard({
               </Stack>
             </Stack>
           </DrawerBody>
+          <DrawerFooter>
+            <Text>
+              {cards.length} out of {cardLimit}
+            </Text>
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>

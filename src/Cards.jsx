@@ -7,6 +7,7 @@ import {
   Flex,
   Spacer,
   Center,
+  Text,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 
@@ -95,7 +96,6 @@ function Cards({ selectedGroup, session, selectedGroupSet }) {
           <>
             <InsertFlashCard
               cards={cards}
-              setCards={setCards}
               selectedGroup={selectedGroup}
               session={session}
               databaseSync={databaseSync}

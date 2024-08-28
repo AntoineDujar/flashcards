@@ -1,5 +1,5 @@
 import { supabase } from "./supabaseClient";
-import { Button } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 
 import { useState, useEffect, useRef } from "react";
 
@@ -16,7 +16,9 @@ import {
 } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
 
-function InsertGroup({ setGroups, session, groupsSync }) {
+const groupLimit = 50;
+
+function InsertGroup({ session, groupsSync, groups }) {
   const [groupName, setGroupName] = useState("");
   const inputRef = useRef();
 
@@ -28,19 +30,23 @@ function InsertGroup({ setGroups, session, groupsSync }) {
   };
 
   const groupsInsert = async () => {
-    const { user } = session;
-    const { data, error } = await supabase
-      .from("groups")
-      .insert([{ group_name: groupName, user_id: user.id }])
-      .select();
-    if (error) {
-      console.log(error);
+    if (groups.length < groupLimit) {
+      const { user } = session;
+      const { data, error } = await supabase
+        .from("groups")
+        .insert([{ group_name: groupName, user_id: user.id }])
+        .select();
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(data);
+      }
+      setGroupName("");
+      inputRef.current.focus();
+      groupsSync();
     } else {
-      console.log(data);
+      alert("Group limit reached");
     }
-    setGroupName("");
-    inputRef.current.focus();
-    groupsSync();
   };
 
   useEffect(() => {
@@ -62,7 +68,7 @@ function InsertGroup({ setGroups, session, groupsSync }) {
         onClose={onClose}
         finalFocusRef={btnRef}
       >
-        <DrawerOverlay />
+        <DrawerOverlay bg="blackAlpha.000" />
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>Add a new group</DrawerHeader>
@@ -78,6 +84,11 @@ function InsertGroup({ setGroups, session, groupsSync }) {
               Add Group
             </Button>
           </DrawerBody>
+          <DrawerFooter>
+            <Text>
+              {groups.length} out of {groupLimit}
+            </Text>
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>

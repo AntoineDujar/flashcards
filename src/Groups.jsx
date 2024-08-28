@@ -6,6 +6,7 @@ import {
   Flex,
   Spacer,
   Center,
+  Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { supabase } from "./supabaseClient";
@@ -38,6 +39,7 @@ function Groups({ setSelectedGroup, session }) {
     } else {
       setLoading.toggle();
       console.log(data);
+      console.log(data.length);
       setGroups(data);
     }
   };
@@ -69,9 +71,9 @@ function Groups({ setSelectedGroup, session }) {
         <SettingsButton />
         <Spacer />
         <InsertGroup
-          setGroups={setGroups}
           session={session}
           groupsSync={groupsSync}
+          groups={groups}
         />
         <Button
           onClick={setEditMode.toggle}

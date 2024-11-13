@@ -36,7 +36,7 @@ export default function Auth() {
     }
   };
 
-  const handleLogin = async () => {
+  const handleSignIn = async () => {
     setLoading(true);
     const {
       data: { session },
@@ -47,7 +47,21 @@ export default function Auth() {
     });
 
     if (error) alert(error.error_description || error.message);
-    if (!session) alert("Check your email for the login link!");
+    setLoading(false);
+  };
+
+  const handleSignUp = async () => {
+    setLoading(true);
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
+
+    if (error) alert(error.error_description || error.message);
+    else alert("Check your email for the sign up verification");
     setLoading(false);
   };
 
@@ -55,7 +69,7 @@ export default function Auth() {
     <>
       <Card>
         <CardHeader>
-          <Heading>Log in</Heading>
+          <Heading>Sign in or sign up</Heading>
         </CardHeader>
         <CardBody>
           <Input
@@ -76,8 +90,11 @@ export default function Auth() {
               </Button>
             </InputRightElement>
           </InputGroup>
-          <Button colorScheme="blue" size="lg" onClick={() => handleLogin()}>
-            {loading ? <span>Loading</span> : <span>Log in</span>}
+          <Button colorScheme="blue" size="lg" onClick={() => handleSignIn()}>
+            {loading ? <span>Loading</span> : <span>Sign In</span>}
+          </Button>
+          <Button size="lg" onClick={() => handleSignUp()}>
+            {loading ? <span>Loading</span> : <span>Sign Up</span>}
           </Button>
         </CardBody>
       </Card>

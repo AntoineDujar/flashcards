@@ -27,7 +27,7 @@ import { supabase } from "./supabaseClient";
 import { MdAdd } from "react-icons/md";
 import { openai } from "./openaiClient";
 
-const cardLimit = 5;
+const cardLimit = 100;
 
 function InsertFlashCard({
   cards,

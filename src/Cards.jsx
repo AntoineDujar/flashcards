@@ -28,6 +28,7 @@ function Cards({ selectedGroup, session, selectedGroupSet }) {
   const [cards, setCards] = useState([]);
   const [recallInProgress, setRecallInProgress] = useState(false);
   const [editMode, setEditMode] = useBoolean();
+  const [flipped, setFlipped] = useBoolean();
   const [loading, setLoading] = useBoolean();
 
   const clearSelectedGroup = () => {
@@ -111,7 +112,11 @@ function Cards({ selectedGroup, session, selectedGroupSet }) {
             </Button>
           </>
         ) : (
-          <></>
+          <>
+            <Button onClick={setFlipped.toggle} variant="outline">
+              Flip
+            </Button>
+          </>
         )}
       </Flex>
       {!recallInProgress ? (
@@ -142,7 +147,11 @@ function Cards({ selectedGroup, session, selectedGroupSet }) {
           )}
         </>
       ) : (
-        <RecallMode cards={cards} handleRecall={handleRecallInProgress} />
+        <RecallMode
+          cards={cards}
+          handleRecall={handleRecallInProgress}
+          flipped={flipped}
+        />
       )}
     </>
   );

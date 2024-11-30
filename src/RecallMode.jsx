@@ -35,7 +35,7 @@ function shuffleArray(originalArray) {
   return shuffledArray;
 }
 
-function RecallMode({ cards, handleRecall }) {
+function RecallMode({ cards, handleRecall, flipped }) {
   const [testCards, setTestCards] = useState(shuffleArray(cards));
   const [flipCard, setFlipCard] = useState(false);
   const [cardsLeft, setCardsLeft] = useState(testCards.length - 1);
@@ -103,7 +103,11 @@ function RecallMode({ cards, handleRecall }) {
                   <Heading size="md" textTransform="uppercase">
                     First Side
                   </Heading>
-                  <Text fontSize="2xl">{testCards[cardsLeft].first_side}</Text>
+                  <Text fontSize="2xl">
+                    {flipped
+                      ? testCards[cardsLeft].second_side
+                      : testCards[cardsLeft].first_side}
+                  </Text>
                 </Stack>
               </CardBody>
             ) : (
@@ -114,7 +118,9 @@ function RecallMode({ cards, handleRecall }) {
                       Second Side
                     </Heading>
                     <Text fontSize="2xl">
-                      {testCards[cardsLeft].second_side}
+                      {flipped
+                        ? testCards[cardsLeft].first_side
+                        : testCards[cardsLeft].second_side}
                     </Text>
                   </Stack>
                 </CardBody>
